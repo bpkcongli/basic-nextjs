@@ -1,56 +1,56 @@
+@import 'mixin';
+
+@mixin flexCenter() {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+%text-center {
+  text-align: center;
+}
+
+$primaryColor: #0070f3;
+
 .container {
   padding: 0 2rem;
 }
 
 .main {
+  @include flexCenter();
   min-height: 100vh;
   padding: 4rem 0;
   flex: 1;
-  display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
 }
 
 .footer {
-  display: flex;
+  @include flexCenter();
   flex: 1;
   padding: 2rem 0;
   border-top: 1px solid #eaeaea;
-  justify-content: center;
-  align-items: center;
-}
-
-.footer a {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-grow: 1;
-}
-
-.title a {
-  color: #0070f3;
-  text-decoration: none;
-}
-
-.title a:hover,
-.title a:focus,
-.title a:active {
-  text-decoration: underline;
+  a {
+    @include flexCenter();
+    flex-grow: 1;
+  }
 }
 
 .title {
+  @extend %text-center;
   margin: 0;
   line-height: 1.15;
   font-size: 4rem;
+  a {
+    color: $primaryColor;
+    text-decoration: none;
+  }
+  a:hover, a:focus, a:active {
+    text-decoration: underline;
+  }
 }
 
-.title,
 .description {
-  text-align: center;
-}
-
-.description {
+  @extend %text-center;
   margin: 4rem 0;
   line-height: 1.5;
   font-size: 1.5rem;
@@ -66,9 +66,7 @@
 }
 
 .grid {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  @include flexCenter();
   flex-wrap: wrap;
   max-width: 800px;
 }
@@ -83,24 +81,22 @@
   border-radius: 10px;
   transition: color 0.15s ease, border-color 0.15s ease;
   max-width: 300px;
+  h2 {
+    margin: 0 0 1rem 0;
+    font-size: 1.5rem;
+  }
+  p {
+    margin: 0;
+    font-size: 1.25rem;
+    line-height: 1.5;
+  }
 }
 
 .card:hover,
 .card:focus,
 .card:active {
-  color: #0070f3;
-  border-color: #0070f3;
-}
-
-.card h2 {
-  margin: 0 0 1rem 0;
-  font-size: 1.5rem;
-}
-
-.card p {
-  margin: 0;
-  font-size: 1.25rem;
-  line-height: 1.5;
+  color: $primaryColor;
+  border-color: $primaryColor;
 }
 
 .logo {
@@ -108,9 +104,17 @@
   margin-left: 0.5rem;
 }
 
-@media (max-width: 600px) {
+$mobile: 560px;
+@include responsiveForBelow($mobile) {
   .grid {
     width: 100%;
     flex-direction: column;
+  }
+}
+
+$colors: blue red violet green;
+@each $color in $colors {
+  .bg-#{"" + $color} {
+    background-color: $color;
   }
 }
