@@ -1,12 +1,18 @@
 import { useRouter } from 'next/router';
 import LayoutPage from '../../components/LayoutPage';
 
-interface IUsersProps {
-  blogs: Array<any>,
+interface IPerson {
+  id: string,
+  name: string,
+  number: string,
 }
 
-export default function Users(props: IUsersProps) {
-  const { blogs } = props;
+interface IPersonsProps {
+  persons: IPerson[],
+}
+
+export default function Users(props: IPersonsProps) {
+  const { persons } = props;
   const router = useRouter();
 
   return (
@@ -14,9 +20,9 @@ export default function Users(props: IUsersProps) {
       <div>
         <h1>Users</h1>
         <ul>
-          {blogs.map(({ id, title, author }) => (
+          {persons.map(({ id, name, number }) => (
             <li key={id}>
-              {title} - {author}
+              {name} - {number}
               <br />
               <button type="button" onClick={() => router.push(`/users/${id}`)}>Go to Details</button>
             </li>
@@ -28,12 +34,12 @@ export default function Users(props: IUsersProps) {
 }
 
 export const getStaticProps = async () => {
-  const res = await fetch('http://localhost:3003/api/blogs');
-  const blogs = await res.json();
+  const res = await fetch('https://fullstackopen-phonebookapps.herokuapp.com/api/persons');
+  const persons = await res.json();
 
   return {
     props: {
-      blogs,
+      persons,
     },
   };
 };

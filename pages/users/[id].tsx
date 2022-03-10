@@ -1,4 +1,3 @@
-// import { useRouter } from 'next/router';
 import LayoutPage from '../../components/LayoutPage';
 
 interface IContext {
@@ -7,57 +6,32 @@ interface IContext {
   }
 }
 
-interface Blog {
-  title: string,
-  author: string,
-  url: string,
-  likes: number,
-  user: {
-    username: string,
-    name: string,
-    id: string,
-  },
-  comments: Array<{
-    content: string,
-    id: string,
-  }>,
+interface Person {
   id: string,
+  name: string,
+  number: string,
 }
 
-export default function UsersDetail(props: {blog: Blog}) {
-  // const router = useRouter();
-  // const { id } = router.query;
-  const { blog } = props;
-  const {
-    title, author, url, likes, user, comments,
-  } = blog;
+export default function UsersDetail(props: {person: Person}) {
+  const { person } = props;
+  const { name, number } = person;
 
   return (
     <LayoutPage pageTitle="Users Detail">
       <div>
         <h2>Users Detail</h2>
-        <h3>{title} by {author}</h3>
-        <a href={url}>{url}</a>
-        <p>Total likes: {likes}</p>
-        <p>Added by: {user.name}</p>
-        {comments.length === 0
-          ? <p>No comments found.</p>
-          : (
-            <ul>
-              {comments.map(({ content, id }) => <li key={id}>{content}</li>)}
-            </ul>
-          )}
+        <h3>{number} by {name}</h3>
       </div>
     </LayoutPage>
   );
 }
 
 export const getStaticPaths = async () => {
-  const res = await fetch('http://localhost:3003/api/blogs');
-  const blogs: Array<any> = await res.json();
-  const paths = blogs.map((blog) => ({
+  const res = await fetch('https://fullstackopen-phonebookapps.herokuapp.com/api/persons');
+  const persons: Person[] = await res.json();
+  const paths = persons.map((person) => ({
     params: {
-      id: blog.id,
+      id: person.id,
     },
   }));
 
@@ -69,12 +43,12 @@ export const getStaticPaths = async () => {
 
 export const getStaticProps = async (context: IContext) => {
   const { id } = context.params;
-  const res = await fetch(`http://localhost:3003/api/blogs/${id}`);
-  const blog: Blog = await res.json();
+  const res = await fetch(`https://fullstackopen-phonebookapps.herokuapp.com/api/persons/${id}`);
+  const person: Person = await res.json();
 
   return {
     props: {
-      blog,
+      person,
     },
   };
 };
